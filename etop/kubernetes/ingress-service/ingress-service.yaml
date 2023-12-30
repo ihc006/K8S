@@ -1,0 +1,69 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-etop-uat-backend
+  annotations:
+    #kubernetes.io/ingress.class: nginx  
+    #nginx.ingress.kubernetes.io/ssl-redirect: "true" #default degeri 'true'dur  "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+      - www.examinion.com
+    secretName: etop-tls 
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /backend(/|$)(.*)
+        pathType: Prefix        
+        backend:
+          service:
+            name: test-service-service
+            port:
+              number: 8080
+      #- path: /
+        #pathType: Prefix
+        #backend:
+          #service:
+            #name: frontend-service-service
+            #port:
+              #number: 80
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-etop-uat-frontend
+  annotations:
+    #kubernetes.io/ingress.class: nginx  
+    #nginx.ingress.kubernetes.io/ssl-redirect: "true" #default degeri 'true'dur  "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    #nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+      - www.examinion.com
+    secretName: etop-tls 
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      #- path: /backend
+        #pathType: Prefix        
+        #backend:
+          #service:
+            #name: test-service-service
+            #port:
+              #number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service-service
+            port:
+              number: 80

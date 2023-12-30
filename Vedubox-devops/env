@@ -1,0 +1,8 @@
+
+notification-service_PORT=9002
+notification-service_URL=http://notification-service:9002/
+
+product-service_PORT=9001
+product-service_URL=http://product-service:9001/
+
+DOCKERHUB_USER=kypnt
